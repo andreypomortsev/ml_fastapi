@@ -1,5 +1,8 @@
 fastapi[all]
-diffusers==0.4.0
+torch
+torchvision 
+torchaudio
+diffusers==0.10.2
 transformers
 scipy
 ftfy
