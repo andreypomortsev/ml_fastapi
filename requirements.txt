@@ -1,5 +1,8 @@
+torch -f https://download.pytorch.org/whl/torch_stable.html
+torchvision -f https://download.pytorch.org/whl/torch_stable.html
 fastapi[all]
-diffusers==0.4.0
+diffusers
 transformers
 scipy
 ftfy
+accelerate
