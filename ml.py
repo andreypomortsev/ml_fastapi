@@ -14,11 +14,11 @@ pipe = StableDiffusionPipeline.from_pretrained(
     scheduler = scheduler,
     torch_dtype = torch.float16,
     use_auth_token = TOKEN
-).to('cuda:0')
+)
+
+pipe = pipe.to('cuda') #need to rewrite for diff. types of devices cpu gpu tpu
 
 prompt = "A handsome bunny abasks on the beach"
-image = pipe(f"{prompt}", num_images_per_prompt = 1).images[0]  
-image.save(f"{prompt}.png")
 
 def obtain_image(
     prompt: str,
