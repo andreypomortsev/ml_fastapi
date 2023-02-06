@@ -5,7 +5,10 @@ from diffusers import StableDiffusionPipeline, EulerDiscreteScheduler
 from PIL.Image import Image
 
 load_dotenv()
+
 TOKEN = os.getenv('TOKEN')
+DEVICE = "cuda" if torch.cuda.is_available() else "mps"
+
 model_id = "CompVis/stable-diffusion-v1-4"
 
 scheduler = EulerDiscreteScheduler.from_pretrained(model_id, subfolder="scheduler")
@@ -16,14 +19,12 @@ pipe = StableDiffusionPipeline.from_pretrained(
     use_auth_token = TOKEN
 )
 
-pipe = pipe.to('cuda') #need to rewrite for diff. types of devices cpu gpu tpu
-
-prompt = "A handsome bunny abasks on the beach"
+pipe = pipe.to(DEVICE)
 
 def obtain_image(
     prompt: str,
     *,
-    seed: int | None = None,
+    seed = None,
     num_inference_steps: int = 50,
     guidance_scale: float = 7.5
 ) -> Image:
