@@ -24,7 +24,7 @@ def create_item(item: Item):
     return item
 
 @app.get("/generate")
-def generate_image(prompt: str):
-    image = obtain_image(prompt, num_inference_steps=5, seed=1024)
+def generate_image(prompt: str, steps: int):
+    image = obtain_image(prompt, num_inference_steps=steps)
     image.save("image.png")
     return FileResponse("image.png")
