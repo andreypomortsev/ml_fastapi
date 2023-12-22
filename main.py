@@ -1,34 +1,22 @@
+import os
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
-from pydantic import BaseModel
 from ml import obtain_image
 
 app = FastAPI()
 
-
-@app.get("/")
-def read_root():
-    return {"Hello": "world"}
-
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int):
-    return {"item_id": item_id}
-
-
-class Item(BaseModel):
-    name: str
-    price: float
-    tags: list[str] = []
-
-
-@app.post("items/")
-def create_item(item: Item):
-    return item
+COMMAND = "pip install torch==1.12.1 torchvision==0.13.1 \
+--extra-index-url https://download.pytorch.org/whl/cu113"
+torch_command = os.environ.get("TORCH_COMMAND", COMMAND)
+commandline_args = os.environ.get("COMMANDLINE_ARGS", "--skip-torch-cuda-test")
 
 
 @app.get("/generate")
 def generate_image(prompt: str, steps: int):
+    """
+    Endpoint that generates an image with given prompt and number of inference steps.
+    Returns the generated image in a FileResponse.
+    """
     image = obtain_image(prompt, num_inference_steps=steps)
-    image.save("image.png")
-    return FileResponse("image.png")
+    image.save(f"{prompt}.png")
+    return FileResponse(f"{prompt}.png")
